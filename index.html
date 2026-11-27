@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-vifm0a0SCxeX/DVJDfhdBPC4FvXV4pJR7eCHT3yvM4g='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-pr5hKENz0vTBnZGadMNcS/z5CLtjO7JIrQu9RPSpkQI='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="no-referrer">
 <meta name="format-detection" content="telephone=no">
 <title>Pedido de Ímãs Joinville</title>
 <style>
 :root{--bg:#f6f4ef;--card:#fff;--ink:#1d1d1f;--muted:#6e6e73;--line:#e6e2d8;--accent:#1f7a3a;--accent-ink:#fff;--soft:#eaf4ec;--wa:#25D366;--shadow:0 1px 2px rgba(0,0,0,.05),0 8px 24px rgba(0,0,0,.06);--barbg:rgba(255,255,255,.92);--err:#c0392b}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141414;--card:#1e1e1f;--ink:#f2f2f2;--muted:#a1a1a6;--line:#2e2e30;--accent:#3fbf68;--accent-ink:#06210f;--soft:#1b2b20;--shadow:none;--barbg:rgba(30,30,31,.92);color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#141414;--card:#1e1e1f;--ink:#f2f2f2;--muted:#a1a1a6;--line:#2e2e30;--accent:#3fbf68;--accent-ink:#06210f;--soft:#1b2b20;--shadow:none;--barbg:rgba(30,30,31,.92);color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141414;--card:#1e1e1f;--ink:#f2f2f2;--muted:#a1a1a6;--line:#2e2e30;--accent:#3fbf68;--accent-ink:#06210f;--soft:#1b2b20;--shadow:none;--barbg:rgba(30,30,31,.92);--err:#ff7a6b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141414;--card:#1e1e1f;--ink:#f2f2f2;--muted:#a1a1a6;--line:#2e2e30;--accent:#3fbf68;--accent-ink:#06210f;--soft:#1b2b20;--shadow:none;--barbg:rgba(30,30,31,.92);--err:#ff7a6b;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
 .wrap{max-width:1040px;margin:0 auto;padding-block:24px 170px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -84,8 +84,8 @@ footer{color:var(--muted);font-size:13px;margin-top:30px;text-align:center}
   .qty{gap:5px}
   .qty button{flex-basis:36px;height:38px;border-radius:10px;font-size:20px}
   .qty input{height:38px;border-radius:10px;font-size:16px}
-  .chips{gap:5px;margin-top:6px}
-  .chips button{font-size:12px;padding:6px 0;border-radius:9px}
+  .chips{gap:4px;margin-top:6px}
+  .chips button{font-size:12px;padding:6px 0;border-radius:9px;min-width:0}
   .notes{margin-top:18px;padding:12px}
   .bar .in{display:grid;grid-template-columns:1fr auto;gap:8px 10px;align-items:center}
   .tot{min-width:0}
@@ -165,13 +165,13 @@ GROUPS.forEach(([title,codes])=>{
       <div class="code">IMA-${c}${it.isNew?'<span class="new">NOVO</span>':''}</div>
       <div class="name"></div>
       <div class="qty"><button aria-label="menos">−</button><input inputmode="numeric" pattern="[0-9]*" value="0" aria-label="quantidade"><button aria-label="mais">+</button></div>
-      <div class="chips"><button>+5</button><button>+10</button><button>+20</button></div>`;
+      <div class="chips"><button data-d="-10" aria-label="tirar 10">−10</button><button data-d="5">+5</button><button data-d="10">+10</button><button data-d="20">+20</button></div>`;
     d.querySelector('.name').textContent=it.name;
     const [m,p]=d.querySelectorAll('.qty button'),inp=d.querySelector('input');
     const set=v=>{v=Math.max(0,Math.min(9999,parseInt(v)||0));q[c]=v;inp.value=v;d.classList.toggle('on',v>0);upd()};
     m.onclick=()=>set(q[c]-1);p.onclick=()=>set(q[c]+1);
     inp.oninput=()=>set(inp.value.replace(/\D/g,''));inp.onfocus=()=>inp.select();
-    d.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>set(q[c]+parseInt(b.textContent)));
+    d.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>set(q[c]+parseInt(b.dataset.d)));
     d._set=set;g.appendChild(d);
   });
 });
